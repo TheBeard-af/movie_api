@@ -1,18 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MyFlix</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Welcome to My Movies Web Application</h1>
-    <p>This web application will provide users with access to information about different
-        movies, directors, and genres. Users will be able to sign up, update their
-        personal information, and create a list of their favorite movies</p>
+    <p>
+      This web application will provide users with access to information about
+      different movies, directors, and genres. Users will be able to sign up,
+      update their personal information, and create a list of their favorite
+      movies
+    </p>
 
+    <div class="container">
+      <h1>API Documentation</h1>
 
-<!-- 
+      <h2>Get All Movies</h2>
+      <p><strong>URL:</strong> /movies</p>
+      <p><strong>Method:</strong> GET</p>
+      <p><strong>Description:</strong> Returns a list of all movies.</p>
+      <p><strong>Response Format:</strong></p>
+      <pre>
+[{
+        "Title": "The Matrix",
+        "Description": "A dystopian future with advanced AI.",
+        "Genre": { "Name": "action", "Description": "Shooting and stuff" },
+        "Director": { "Name": "Lana Wachowski", "Bio": "Visionary filmmaker.", "Birth": 1965 }
+    }]</pre
+      >
+
+      <h2>Get Movie by Title</h2>
+      <p><strong>URL:</strong> /movies/:title</p>
+      <p><strong>Method:</strong> GET</p>
+      <p>
+        <strong>Description:</strong> Returns details of a specific movie by its
+        title.
+      </p>
+      <p><strong>Parameters:</strong> <code>title</code> (string)</p>
+      <p><strong>Response Format:</strong></p>
+      <pre>
+{
+        "Title": "The Matrix",
+        "Description": "A dystopian future with advanced AI.",
+        "Genre": { "Name": "action", "Description": "Shooting and stuff" },
+        "Director": { "Name": "Lana Wachowski", "Bio": "Visionary filmmaker.", "Birth": 1965 }
+    }</pre
+      >
+
+      <h2>Get Movies by Genre</h2>
+      <p><strong>URL:</strong> /movies/genre/:genreName</p>
+      <p><strong>Method:</strong> GET</p>
+      <p>
+        <strong>Description:</strong> Returns movies belonging to a specific
+        genre.
+      </p>
+      <p><strong>Parameters:</strong> <code>genreName</code> (string)</p>
+      <p><strong>Response Format:</strong></p>
+      <pre>
+[{
+        "Title": "The Matrix",
+        "Description": "A dystopian future with advanced AI.",
+        "Genre": { "Name": "action", "Description": "Shooting and stuff" },
+        "Director": { "Name": "Lana Wachowski", "Bio": "Visionary filmmaker.", "Birth": 1965 }
+    }]</pre
+      >
+
+      <h2>Get Director Details</h2>
+      <p><strong>URL:</strong> /movies/directors/:directorName</p>
+      <p><strong>Method:</strong> GET</p>
+      <p>
+        <strong>Description:</strong> Returns details of a director by their
+        name.
+      </p>
+      <p><strong>Parameters:</strong> <code>directorName</code> (string)</p>
+      <p><strong>Response Format:</strong></p>
+      <pre>
+{
+        "Name": "Lana Wachowski",
+        "Bio": "Visionary filmmaker.",
+        "Birth": 1965
+    }</pre
+      >
+
+      <h2>Create a User</h2>
+      <p><strong>URL:</strong> /users</p>
+      <p><strong>Method:</strong> POST</p>
+      <p><strong>Description:</strong> Creates a new user.</p>
+      <p><strong>Request Body:</strong></p>
+      <pre>{ "name": "Kim" }</pre>
+      <p><strong>Response Format:</strong></p>
+      <pre>{ "id": "uuid", "name": "Kim", "favouriteMovies": [] }</pre>
+
+      <h2>Update a User</h2>
+      <p><strong>URL:</strong> /users/:id</p>
+      <p><strong>Method:</strong> PUT</p>
+      <p><strong>Description:</strong> Updates a user's details.</p>
+      <p><strong>Parameters:</strong> <code>id</code> (string)</p>
+      <p><strong>Request Body:</strong></p>
+      <pre>{ "name": "New Name" }</pre>
+      <p><strong>Response Format:</strong></p>
+      <pre>{ "id": "uuid", "name": "New Name", "favouriteMovies": [] }</pre>
+
+      <h2>Add Movie to User's Favourites</h2>
+      <p><strong>URL:</strong> /users/:id/:movieTitle</p>
+      <p><strong>Method:</strong> POST</p>
+      <p>
+        <strong>Description:</strong> Adds a movie to a user's favourites list.
+      </p>
+      <p>
+        <strong>Parameters:</strong> <code>id</code> (string),
+        <code>movieTitle</code> (string)
+      </p>
+      <p><strong>Response Format:</strong></p>
+      <pre>"{movieTitle} has been added to user {id}'s array"</pre>
+
+      <h2>Remove Movie from User's Favourites</h2>
+      <p><strong>URL:</strong> /users/:id/:movieTitle</p>
+      <p><strong>Method:</strong> DELETE</p>
+      <p>
+        <strong>Description:</strong> Removes a movie from a user's favourites
+        list.
+      </p>
+      <p>
+        <strong>Parameters:</strong> <code>id</code> (string),
+        <code>movieTitle</code> (string)
+      </p>
+      <p><strong>Response Format:</strong></p>
+      <pre>"{movieTitle} has been removed from user {id}'s array"</pre>
+
+      <h2>Delete a User</h2>
+      <p><strong>URL:</strong> /users/:id</p>
+      <p><strong>Method:</strong> DELETE</p>
+      <p><strong>Description:</strong> Deletes a user by their ID.</p>
+      <p><strong>Parameters:</strong> <code>id</code> (string)</p>
+      <p><strong>Response Format:</strong></p>
+      <pre>"User {id} has been deleted"</pre>
+    </div>
+
+    <!-- 
 
 
 Return a list of ALL movies to the user;
@@ -36,7 +163,5 @@ delete '/users/:id'
 
 
 -->
-
-        
-</body>
+  </body>
 </html>
