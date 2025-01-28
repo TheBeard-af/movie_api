@@ -64,7 +64,7 @@ let movies = [
 ];
 
 // create
-app.post("/users", (req, res) => {
+app.post("/user", (req, res) => {
   const newUser = req.body;
 
   if (newUser.name) {
@@ -76,8 +76,23 @@ app.post("/users", (req, res) => {
   }
 });
 
+// read
+app.get("/user/:id", (req, res) => {
+  const { id } = req.params;
+  const updateUser = req.body;
+
+  let user = users.find((user) => user.id == id);
+
+  if (user) {
+    user.name = updateUser.name;
+    res.status(200).json(user);
+  } else {
+    res.status(400).send("no such user");
+  }
+});
+
 // update
-app.put("/users/:id", (req, res) => {
+app.put("/user/:id", (req, res) => {
   const { id } = req.params;
   const updateUser = req.body;
 
@@ -92,7 +107,7 @@ app.put("/users/:id", (req, res) => {
 });
 
 // create
-app.post("/users/:id/:movieTitle", (req, res) => {
+app.post("/user/:id/:movieTitle", (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find((user) => user.id == id);
@@ -106,7 +121,7 @@ app.post("/users/:id/:movieTitle", (req, res) => {
 });
 
 // delete
-app.delete("/users/:id/:movieTitle", (req, res) => {
+app.delete("/user/:id/:movieTitle", (req, res) => {
   const { id, movieTitle } = req.params;
 
   let user = users.find((user) => user.id == id);
@@ -124,7 +139,7 @@ app.delete("/users/:id/:movieTitle", (req, res) => {
 });
 
 // delete
-app.delete("/users/:id", (req, res) => {
+app.delete("/user/:id", (req, res) => {
   const { id } = req.params;
 
   let user = users.find((user) => user.id == id);
