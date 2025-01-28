@@ -85,7 +85,7 @@
       >
 
       <h2>Create a User</h2>
-      <p><strong>URL:</strong> /users</p>
+      <p><strong>URL:</strong> /user</p>
       <p><strong>Method:</strong> POST</p>
       <p><strong>Description:</strong> Creates a new user.</p>
       <p><strong>Request Body:</strong></p>
@@ -94,7 +94,7 @@
       <pre>{ "id": "uuid", "name": "Kim", "favouriteMovies": [] }</pre>
 
       <h2>Update a User</h2>
-      <p><strong>URL:</strong> /users/:id</p>
+      <p><strong>URL:</strong> /user/:id</p>
       <p><strong>Method:</strong> PUT</p>
       <p><strong>Description:</strong> Updates a user's details.</p>
       <p><strong>Parameters:</strong> <code>id</code> (string)</p>
@@ -104,7 +104,7 @@
       <pre>{ "id": "uuid", "name": "New Name", "favouriteMovies": [] }</pre>
 
       <h2>Add Movie to User's Favourites</h2>
-      <p><strong>URL:</strong> /users/:id/:movieTitle</p>
+      <p><strong>URL:</strong> /user/:id/:movieTitle</p>
       <p><strong>Method:</strong> POST</p>
       <p>
         <strong>Description:</strong> Adds a movie to a user's favourites list.
@@ -117,7 +117,7 @@
       <pre>"{movieTitle} has been added to user {id}'s array"</pre>
 
       <h2>Remove Movie from User's Favourites</h2>
-      <p><strong>URL:</strong> /users/:id/:movieTitle</p>
+      <p><strong>URL:</strong> /user/:id/:movieTitle</p>
       <p><strong>Method:</strong> DELETE</p>
       <p>
         <strong>Description:</strong> Removes a movie from a user's favourites
@@ -131,7 +131,7 @@
       <pre>"{movieTitle} has been removed from user {id}'s array"</pre>
 
       <h2>Delete a User</h2>
-      <p><strong>URL:</strong> /users/:id</p>
+      <p><strong>URL:</strong> /user/:id</p>
       <p><strong>Method:</strong> DELETE</p>
       <p><strong>Description:</strong> Deletes a user by their ID.</p>
       <p><strong>Parameters:</strong> <code>id</code> (string)</p>
@@ -139,29 +139,5 @@
       <pre>"User {id} has been deleted"</pre>
     </div>
 
-    <!-- 
-
-
-Return a list of ALL movies to the user;
-get '/movies'
-Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user;
-get '/movies/:title'
-Return data about a genre (description) by name/title (e.g., “Thriller”);
-get '/movies/genre/:genreName'
-Return data about a director (bio, birth year, death year) by name;
-get '/movies/directors/:directorName'
-Allow new users to register;
-post '/users'
-Allow users to update their user info (username);
-put '/users/:id'
-Allow users to add a movie to their list of favorites (showing only a text that a movie has been added—more on this later);
-post '/users/:id/:movieTitle'
-Allow users to remove a movie from their list of favorites (showing only a text that a movie has been removed—more on this later);
-delete '/users/:id/:movieTitle'
-Allow existing users to deregister (showing only a text that a user email has been removed—more on this later).
-delete '/users/:id'
-
-
--->
   </body>
 </html>
