@@ -114,7 +114,7 @@ app.post("/user/:id/:movieTitle", (req, res) => {
 
   if (user) {
     user.favouriteMovies.push(movieTitle);
-    res.status(200).send(`${movieTitle} has been added to user ${id}'s array`);
+    res.status(200).send(`${movieTitle} has been added for user ${id}`);
   } else {
     res.status(400).send("no such user");
   }
@@ -132,7 +132,7 @@ app.delete("/user/:id/:movieTitle", (req, res) => {
     );
     res
       .status(200)
-      .send(`${movieTitle} has been removed from user ${id}'s array`);
+      .send(`${movieTitle} has been removed for user ${id}`);
   } else {
     res.status(400).send("no such user");
   }
