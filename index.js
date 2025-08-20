@@ -83,16 +83,16 @@ app.get("/movies/directors/:directorName", async (req, res) => {
 });
 
 // read
-app.get("/users", async (req, res) => {
-  await Users.find()
-    .then((users) => {
-      res.status(200).json(users);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error: " + err);
-    });
-});
+// app.get("/users", async (req, res) => {
+//   await Users.find()
+//     .then((users) => {
+//       res.status(200).json(users);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//       res.status(500).send("Error: " + err);
+//     });
+// });
 
 // Allow new users to regester
 app.post("/users", async (req, res) => {
