@@ -33,23 +33,25 @@ const { check, validationResult } = require("express-validator");
 
 const cors = require("cors");
 
-let allowedOrigins = ["http://localhost:8080", "http://testsite.com"];
+app.use(cors());
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        // If a specific origin isn’t found on the list of allowed origins
-        let message =
-          "The CORS policy for this application doesn’t allow access from origin " +
-          origin;
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    },
-  })
-);
+// let allowedOrigins = ["http://localhost:8080", "http://testsite.com"];
+
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       if (!origin) return callback(null, true);
+//       if (allowedOrigins.indexOf(origin) === -1) {
+//         // If a specific origin isn’t found on the list of allowed origins
+//         let message =
+//           "The CORS policy for this application doesn’t allow access from origin " +
+//           origin;
+//         return callback(new Error(message), false);
+//       }
+//       return callback(null, true);
+//     },
+//   })
+// );
 
 let auth = require("./auth")(app);
 
@@ -157,7 +159,7 @@ app.post(
       "Username",
       "Username contains non alphanumeric characters - not allowed."
     ).isAlphanumeric(),
-    check("Password", "Password is required").not().isEmpty(),
+    check("Password", "Password is required and must be at least 8 characters long").isLength({ min: 8 }),
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
   async (req, res) => {
@@ -199,17 +201,45 @@ app.post(
 app.put(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
+  [
+    // Validation for update endpoint
+    check("Username", "Username must be at least 5 characters long").optional().isLength({ min: 5 }),
+    check(
+      "Username",
+      "Username contains non-alphanumeric characters - not allowed."
+    ).optional().isAlphanumeric(),
+    check("Password", "Password must be at least 8 characters long").optional().isLength({ min: 8 }),
+    check("Email", "Email does not appear to be valid").optional().isEmail(),
+    check("Birthday", "Birthday must be a valid date").optional().isISO8601().toDate(),
+  ],
   async (req, res) => {
+    // Check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    if(req.params.Username !== req.user.Username){
+      return res.status(400).send("Permission denied: You cannot update another user's profile.");
+    }
+
+    let hashedPassword;
+    if (req.body.Password) {
+      hashedPassword = Users.hashPassword(req.body.Password);
+    }
+
+    //  build the update object to only include fields that are provided
+    const updateFields = {};
+    if (req.body.Username) updateFields.Username = req.body.Username;
+    if (hashedPassword) updateFields.Password = hashedPassword; // Use the hashed password
+    if (req.body.Email) updateFields.Email = req.body.Email;
+    if (req.body.Birthday) updateFields.Birthday = req.body.Birthday;
+
+
     await Users.findOneAndUpdate(
       { Username: req.params.Username },
-      {
-        $set: {
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        },
-      },
+      { $set: updateFields }, // Use the created updateFields object
       { new: true } // Return the updated document
     )
       .then((updatedUser) => {
