@@ -18,7 +18,7 @@ mongoose
   //   useNewUrlParser: true,
   //   useUnifiedTopology: true,
   // })
-  .connect( process.env.CONNECTION_URI, {
+  .connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -159,7 +159,10 @@ app.post(
       "Username",
       "Username contains non alphanumeric characters - not allowed."
     ).isAlphanumeric(),
-    check("Password", "Password is required and must be at least 8 characters long").isLength({ min: 8 }),
+    check(
+      "Password",
+      "Password is required and must be at least 8 characters long"
+    ).isLength({ min: 8 }),
     check("Email", "Email does not appear to be valid").isEmail(),
   ],
   async (req, res) => {
@@ -203,14 +206,23 @@ app.put(
   passport.authenticate("jwt", { session: false }),
   [
     // Validation for update endpoint
-    check("Username", "Username must be at least 5 characters long").optional().isLength({ min: 5 }),
+    check("Username", "Username must be at least 5 characters long")
+      .optional()
+      .isLength({ min: 5 }),
     check(
       "Username",
       "Username contains non-alphanumeric characters - not allowed."
-    ).optional().isAlphanumeric(),
-    check("Password", "Password must be at least 8 characters long").optional().isLength({ min: 8 }),
+    )
+      .optional()
+      .isAlphanumeric(),
+    check("Password", "Password must be at least 8 characters long")
+      .optional()
+      .isLength({ min: 8 }),
     check("Email", "Email does not appear to be valid").optional().isEmail(),
-    check("Birthday", "Birthday must be a valid date").optional().isISO8601().toDate(),
+    check("Birthday", "Birthday must be a valid date")
+      .optional()
+      .isISO8601()
+      .toDate(),
   ],
   async (req, res) => {
     // Check the validation object for errors
@@ -220,8 +232,10 @@ app.put(
       return res.status(422).json({ errors: errors.array() });
     }
 
-    if(req.params.Username !== req.user.Username){
-      return res.status(400).send("Permission denied: You cannot update another user's profile.");
+    if (req.params.Username !== req.user.Username) {
+      return res
+        .status(400)
+        .send("Permission denied: You cannot update another user's profile.");
     }
 
     let hashedPassword;
@@ -235,7 +249,6 @@ app.put(
     if (hashedPassword) updateFields.Password = hashedPassword; // Use the hashed password
     if (req.body.Email) updateFields.Email = req.body.Email;
     if (req.body.Birthday) updateFields.Birthday = req.body.Birthday;
-
 
     await Users.findOneAndUpdate(
       { Username: req.params.Username },
