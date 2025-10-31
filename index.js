@@ -200,6 +200,24 @@ app.post(
   }
 );
 
+// Get user by username
+app.get(
+  "/users/:Username",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const user = await Users.findOne({ Username: req.params.Username });
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+      res.status(200).json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error: " + err);
+    }
+  }
+);
+
 // update user info by user
 app.put(
   "/users/:Username",
